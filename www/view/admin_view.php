@@ -1,18 +1,21 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+  <!--'templates/head.php'の読み込み-->
   <?php include VIEW_PATH . 'templates/head.php'; ?>
   <title>商品管理</title>
-  <link rel="stylesheet" href="<?php print(STYLESHEET_PATH . 'admin.css'); ?>">
+  <link rel="stylesheet" href="<?php print(h(STYLESHEET_PATH . 'admin.css')); ?>">
 </head>
 <body>
   <?php 
+  //'templates/header_logined.php'の読み込み
   include VIEW_PATH . 'templates/header_logined.php'; 
   ?>
 
   <div class="container">
     <h1>商品管理</h1>
 
+    <!--'templates/messages.php'の読み込み-->
     <?php include VIEW_PATH . 'templates/messages.php'; ?>
 
     <form 
@@ -20,22 +23,27 @@
       action="admin_insert_item.php" 
       enctype="multipart/form-data"
       class="add_item_form col-md-6">
+      <!--商品名の入力フォーム-->
       <div class="form-group">
         <label for="name">名前: </label>
         <input class="form-control" type="text" name="name" id="name">
       </div>
+      <!--商品価格の入力フォーム-->
       <div class="form-group">
         <label for="price">価格: </label>
         <input class="form-control" type="number" name="price" id="price">
       </div>
+      <!--在庫数の入力フォーム-->
       <div class="form-group">
         <label for="stock">在庫数: </label>
         <input class="form-control" type="number" name="stock" id="stock">
       </div>
+      <!--商品画像の選択-->
       <div class="form-group">
         <label for="image">商品画像: </label>
         <input type="file" name="image" id="image">
       </div>
+      <!--公開ステータスの選択-->
       <div class="form-group">
         <label for="status">ステータス: </label>
         <select class="form-control" name="status" id="status">
@@ -43,13 +51,14 @@
           <option value="close">非公開</option>
         </select>
       </div>
-      
+      <!--商品追加ボタン-->
       <input type="submit" value="商品追加" class="btn btn-primary">
     </form>
 
 
     <?php if(count($items) > 0){ ?>
       <table class="table table-bordered text-center">
+        <!--商品情報の表示-->
         <thead class="thead-light">
           <tr>
             <th>商品画像</th>
@@ -61,23 +70,28 @@
         </thead>
         <tbody>
           <?php foreach($items as $item){ ?>
-          <tr class="<?php print(is_open($item) ? '' : 'close_item'); ?>">
-            <td><img src="<?php print(IMAGE_PATH . $item['image']);?>" class="item_image"></td>
-            <td><?php print($item['name']); ?></td>
-            <td><?php print(number_format($item['price'])); ?>円</td>
+          <tr class="<?php print(h(is_open($item) ? '' : 'close_item')); ?>">
+            <!--商品画像-->
+            <td><img src="<?php print(h(IMAGE_PATH . $item['image']));?>" class="item_image"></td>
+            <!--商品名-->
+            <td><?php print(h($item['name'])); ?></td>
+            <!--値段-->
+            <td><?php print(h(number_format($item['price']))); ?>円</td>
             <td>
+              <!--在庫数変更-->
               <form method="post" action="admin_change_stock.php">
                 <div class="form-group">
                   <!-- sqlインジェクション確認のためあえてtext -->
-                  <input  type="text" name="stock" value="<?php print($item['stock']); ?>">
+                  <input  type="text" name="stock" value="<?php print(h($item['stock'])); ?>">
                   個
                 </div>
+                <!--変更ボタン-->
                 <input type="submit" value="変更" class="btn btn-secondary">
-                <input type="hidden" name="item_id" value="<?php print($item['item_id']); ?>">
+                <input type="hidden" name="item_id" value="<?php print(h($item['item_id'])); ?>">
               </form>
             </td>
             <td>
-
+              <!--ステータス変更-->
               <form method="post" action="admin_change_status.php" class="operation">
                 <?php if(is_open($item) === true){ ?>
                   <input type="submit" value="公開 → 非公開" class="btn btn-secondary">
@@ -86,12 +100,12 @@
                   <input type="submit" value="非公開 → 公開" class="btn btn-secondary">
                   <input type="hidden" name="changes_to" value="open">
                 <?php } ?>
-                <input type="hidden" name="item_id" value="<?php print($item['item_id']); ?>">
+                <input type="hidden" name="item_id" value="<?php print(h($item['item_id'])); ?>">
               </form>
-
+              <!--削除ボタン-->
               <form method="post" action="admin_delete_item.php">
                 <input type="submit" value="削除" class="btn btn-danger delete">
-                <input type="hidden" name="item_id" value="<?php print($item['item_id']); ?>">
+                <input type="hidden" name="item_id" value="<?php print(h($item['item_id'])); ?>">
               </form>
 
             </td>
@@ -103,6 +117,7 @@
       <p>商品はありません。</p>
     <?php } ?> 
   </div>
+  <!--削除確認アラート-->
   <script>
     $('.delete').on('click', () => confirm('本当に削除しますか？'))
   </script>
