@@ -15,10 +15,17 @@ $db = get_db_connect();
 $user = get_login_user($db);
 
 $cart_id = get_post('cart_id');
+$token = get_post('token');
 
-if(delete_cart($db, $cart_id)){
-  set_message('カートを削除しました。');
-} else {
+$check_csrf = is_valid_csrf_token($token);
+
+if($check_csrf === TRUE){
+  if(delete_cart($db, $cart_id)){
+    set_message('カートを削除しました。');
+  } else {
+    set_error('カートの削除に失敗しました。');
+  }
+}else{
   set_error('カートの削除に失敗しました。');
 }
 
