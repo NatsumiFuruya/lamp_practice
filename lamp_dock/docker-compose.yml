@@ -1,39 +1,39 @@
-version: '3' # è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã®æ–‡æ³•ã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ï¼“ã‚’åˆ©ç”¨ã™ã‚‹ã€‚
+version: '3' # Ý’èƒtƒ@ƒCƒ‹‚Ì•¶–@‚Ìƒo[ƒWƒ‡ƒ“‚R‚ð—˜—p‚·‚éB
 
 services:
 
-  # 1. phpãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã‚’æ­è¼‰ã—ãŸapacheã‚’ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã™ã‚‹ã‚³ãƒ³ãƒ†ãƒŠã€‚
+  # 1. phpƒ‚ƒWƒ…[ƒ‹‚ð“‹Ú‚µ‚½apache‚ðƒCƒ“ƒXƒg[ƒ‹‚·‚éƒRƒ“ƒeƒiB
   php:
-    build: ./php # phpãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®Dockerfileã«åŸºã¥ã„ã¦ã‚³ãƒ³ãƒ†ãƒŠä½œæˆ
+    build: ./php # phpƒfƒBƒŒƒNƒgƒŠ‚ÌDockerfile‚ÉŠî‚Ã‚¢‚ÄƒRƒ“ƒeƒiì¬
     volumes:
-      - ../www:/var/www # ãƒ›ã‚¹ãƒˆã®htmlãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’phpã‚³ãƒ³ãƒ†ãƒŠã®ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆãƒ«ãƒ¼ãƒˆã¨åŒæœŸã€‚
+      - C:\Users\natsu\MyDocker\lamp_practice\www:/var/www # ƒzƒXƒg‚ÌhtmlƒfƒBƒŒƒNƒgƒŠ‚ðphpƒRƒ“ƒeƒi‚ÌƒhƒLƒ…ƒƒ“ƒgƒ‹[ƒg‚Æ“¯ŠúB
     ports:
-      - 8080:80 # ãƒ›ã‚¹ãƒˆã®8080ç•ªãƒãƒ¼ãƒˆã‚’ã‚³ãƒ³ãƒ†ãƒŠã®80ç•ªãƒãƒ¼ãƒˆã«ãƒ•ã‚©ãƒ¯ãƒ¼ãƒ‰ï¼ˆè»¢é€ï¼‰
+      - 8080:80 # ƒzƒXƒg‚Ì8080”Ôƒ|[ƒg‚ðƒRƒ“ƒeƒi‚Ì80”Ôƒ|[ƒg‚ÉƒtƒHƒ[ƒhi“]‘—j
     depends_on:
       - mysql
 
-  # 2. mysqlã‚’ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã™ã‚‹ã‚³ãƒ³ãƒ†ãƒŠ
+  # 2. mysql‚ðƒCƒ“ƒXƒg[ƒ‹‚·‚éƒRƒ“ƒeƒi
   mysql:
-    image: mysql:5.7 # mysql5.7ã®ã‚¤ãƒ¡ãƒ¼ã‚¸ã‚’ãã®ã¾ã¾åˆ©ç”¨ã€‚
-    # mysqlã®èµ·å‹•æ™‚ã«æ–‡å­—ã‚³ãƒ¼ãƒ‰ã‚’æŒ‡å®š
+    image: mysql:5.7 # mysql5.7‚ÌƒCƒ[ƒW‚ð‚»‚Ì‚Ü‚Ü—˜—pB
+    # mysql‚Ì‹N“®Žž‚É•¶ŽšƒR[ƒh‚ðŽw’è
     command: mysqld --character-set-server=utf8 --collation-server=utf8_general_ci --innodb-use-native-aio=0
     volumes:
-      - ./db:/var/lib/mysql # ãƒ›ã‚¹ãƒˆOSã®dbãƒ•ã‚©ãƒ«ãƒ€å†…ã«mysqlã‚³ãƒ³ãƒ†ãƒŠã®DBã®å†…å®¹ã‚’ä¿å­˜
+      - ./db:/var/lib/mysql # ƒzƒXƒgOS‚ÌdbƒtƒHƒ‹ƒ_“à‚ÉmysqlƒRƒ“ƒeƒi‚ÌDB‚Ì“à—e‚ð•Û‘¶
     environment:
-      - MYSQL_ROOT_PASSWORD=root # mysqlã®ãƒ«ãƒ¼ãƒˆãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã‚’è¨­å®š
-      - MYSQL_DATABASE=sample # ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã§ä½œæˆã™ã‚‹ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹åã‚’è¨­å®š
-      - MYSQL_USER=testuser # ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã§ä½œæˆã™ã‚‹DBãƒ¦ãƒ¼ã‚¶ãƒ¼åã‚’è¨­å®š
-      - MYSQL_PASSWORD=password # ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã§ä½œæˆã™ã‚‹DBãƒ¦ãƒ¼ã‚¶ãƒ¼ã®ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã‚’è¨­å®š
-      - "TZ=Asia/Tokyo" # ã‚¿ã‚¤ãƒ ã‚¾ãƒ¼ãƒ³ã‚’è¨­å®š
+      - MYSQL_ROOT_PASSWORD=root # mysql‚Ìƒ‹[ƒgƒpƒXƒ[ƒh‚ðÝ’è
+      - MYSQL_DATABASE=sample # ƒfƒtƒHƒ‹ƒg‚Åì¬‚·‚éƒf[ƒ^ƒx[ƒX–¼‚ðÝ’è
+      - MYSQL_USER=testuser # ƒfƒtƒHƒ‹ƒg‚Åì¬‚·‚éDBƒ†[ƒU[–¼‚ðÝ’è
+      - MYSQL_PASSWORD=password # ƒfƒtƒHƒ‹ƒg‚Åì¬‚·‚éDBƒ†[ƒU[‚ÌƒpƒXƒ[ƒh‚ðÝ’è
+      - "TZ=Asia/Tokyo" # ƒ^ƒCƒ€ƒ][ƒ“‚ðÝ’è
 
-  # 3. phpmyadminã‚’ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã™ã‚‹ã‚³ãƒ³ãƒ†ãƒŠ
+  # 3. phpmyadmin‚ðƒCƒ“ƒXƒg[ƒ‹‚·‚éƒRƒ“ƒeƒi
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin # phpmyadminã®ã‚³ãƒ³ãƒ†ãƒŠã‚¤ãƒ¡ãƒ¼ã‚¸ã‚’ãã®ã¾ã¾åˆ©ç”¨
+    image: phpmyadmin/phpmyadmin # phpmyadmin‚ÌƒRƒ“ƒeƒiƒCƒ[ƒW‚ð‚»‚Ì‚Ü‚Ü—˜—p
     environment:
-      - PMA_HOST=mysql # ä¸Šè¨˜ã§ä½œæˆã—ãŸmysqlã‚³ãƒ³ãƒ†ãƒŠã«æŽ¥ç¶š
+      - PMA_HOST=mysql # ã‹L‚Åì¬‚µ‚½mysqlƒRƒ“ƒeƒi‚ÉÚ‘±
     depends_on:
-      - mysql # ä¸Šè¨˜ã§ä½œæˆã—ãŸmysqlã‚³ãƒ³ãƒ†ãƒŠã¨ãƒªãƒ³ã‚¯ã™ã‚‹
+      - mysql # ã‹L‚Åì¬‚µ‚½mysqlƒRƒ“ƒeƒi‚ÆƒŠƒ“ƒN‚·‚é
     ports:
-      - 8888:80 # ãƒ›ã‚¹ãƒˆã®8888ç•ªãƒãƒ¼ãƒˆã‚’phpmyadminã‚³ãƒ³ãƒ†ãƒŠã®80ç•ªãƒãƒ¼ãƒˆã«è»¢é€
+      - 8888:80 # ƒzƒXƒg‚Ì8888”Ôƒ|[ƒg‚ðphpmyadminƒRƒ“ƒeƒi‚Ì80”Ôƒ|[ƒg‚É“]‘—
     volumes:
-      - ./pma/sessions:/sessions # ãƒ›ã‚¹ãƒˆOSã®pmaãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªå†…ã«phpmyadminã‚³ãƒ³ãƒ†ãƒŠã®ã‚»ãƒƒã‚·ãƒ§ãƒ³ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä¿å­˜
+      - C:\Users\natsu\MyDocker\lamp_practice\lamp_dock # ƒzƒXƒgOS‚ÌpmaƒfƒBƒŒƒNƒgƒŠ“à‚ÉphpmyadminƒRƒ“ƒeƒi‚ÌƒZƒbƒVƒ‡ƒ“ƒtƒ@ƒCƒ‹‚ð•Û‘¶
