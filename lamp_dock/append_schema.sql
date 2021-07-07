@@ -1,7 +1,7 @@
 CREATE TABLE orders(
   id INT AUTO_INCREMENT,
   user_id INT,
-  create_datetime
+  create_datetime DATETIME
 );
 
 CREATE TABLE order_items(
