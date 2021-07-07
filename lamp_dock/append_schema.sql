@@ -1,11 +1,13 @@
-CREATE TABLE purchase(
-  order_id INT AUTO_INCREMENT,
+CREATE TABLE orders(
+  id INT AUTO_INCREMENT,
   user_id INT,
-  create_datetime DATETIME
+  create_datetime
 );
 
-CREATE TABLE order(
-  order_id INT,  
+CREATE TABLE order_items(
+  orders_id INT,  
   item_id INT,
+  item_name VARCHAR,
+  item_price INT,
   amount INT
 );
