@@ -30,13 +30,19 @@ if(is_admin($user) === false){
 //フォームから各値を取得
 $item_id = get_post('item_id');
 $stock = get_post('stock');
+$token = get_post('token');
 
-//DBの在庫数を更新
-if(update_item_stock($db, $item_id, $stock)){
-  set_message('在庫数を変更しました。');
-} else {
+$check_csrf = is_valid_csrf_token($token);
+
+if($check_csrf === TRUE){
+  //DBの在庫数を更新
+  if(update_item_stock($db, $item_id, $stock)){
+    set_message('在庫数を変更しました。');
+  } else {
+    set_error('在庫数の変更に失敗しました。');
+  }
+}else{
   set_error('在庫数の変更に失敗しました。');
 }
-
 //adminページにリダイレクト
 redirect_to(ADMIN_URL);

@@ -28,5 +28,7 @@ $carts = get_user_carts($db, $user['user_id']);
 //合計金額を変数に格納(cartのpriceとamountをそれぞれ処理に使用)
 $total_price = sum_carts($carts);
 
+$token = get_csrf_token();
+
 //cartの読み込み
 include_once VIEW_PATH . 'cart_view.php';

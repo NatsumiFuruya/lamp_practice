@@ -26,13 +26,19 @@ $user = get_login_user($db);
 
 //フォームからidを取得
 $cart_id = get_post('cart_id');
+$token = get_post('token');
 
-//カート内の削除処理
-if(delete_cart($db, $cart_id)){
-  set_message('カートを削除しました。');
-} else {
+$check_csrf = is_valid_csrf_token($token);
+
+if($check_csrf === TRUE){
+  //カート内の削除処理
+  if(delete_cart($db, $cart_id)){
+    set_message('カートを削除しました。');
+  } else {
+    set_error('カートの削除に失敗しました。');
+  }
+}else{
   set_error('カートの削除に失敗しました。');
 }
-
 //cart.phpへリダイレクト
 redirect_to(CART_URL);

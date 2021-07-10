@@ -31,17 +31,24 @@ if(is_admin($user) === false){
 $item_id = get_post('item_id');
 $changes_to = get_post('changes_to');
 
-//非公開→公開変更
-if($changes_to === 'open'){
-  update_item_status($db, $item_id, ITEM_STATUS_OPEN);
-  set_message('ステータスを変更しました。');
-//公開→非公開変更  
-}else if($changes_to === 'close'){
-  update_item_status($db, $item_id, ITEM_STATUS_CLOSE);
-  set_message('ステータスを変更しました。');
-}else {
+$token = get_post('token');
+
+$check_csrf = is_valid_csrf_token($token);
+
+if($check_csrf === TRUE){
+  //非公開→公開変更
+  if($changes_to === 'open'){
+    update_item_status($db, $item_id, ITEM_STATUS_OPEN);
+    set_message('ステータスを変更しました。');
+  //公開→非公開変更 
+  }else if($changes_to === 'close'){
+    update_item_status($db, $item_id, ITEM_STATUS_CLOSE);
+    set_message('ステータスを変更しました。');
+  }else {
+    set_error('不正なリクエストです。');
+  }
+}else{
   set_error('不正なリクエストです。');
 }
-
 //adminページにリダイレクト
 redirect_to(ADMIN_URL);

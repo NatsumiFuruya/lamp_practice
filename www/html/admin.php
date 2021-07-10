@@ -22,6 +22,8 @@ $db = get_db_connect();
 //PDOを利用してログインユーザーのデータを取得
 $user = get_login_user($db);
 
+$token = get_csrf_token();
+
 //adminでログインしていなければログインページにリダイレクト
 if(is_admin($user) === false){
   redirect_to(LOGIN_URL);

@@ -27,13 +27,19 @@ $user = get_login_user($db);
 //フォームから各値を変数に格納
 $cart_id = get_post('cart_id');
 $amount = get_post('amount');
+$token = get_post('token');
 
-//カートの購入数の変更処理
-if(update_cart_amount($db, $cart_id, $amount)){
-  set_message('購入数を更新しました。');
-} else {
+$check_csrf = is_valid_csrf_token($token);
+
+if($check_csrf === TRUE){
+  //カートの購入数の変更処理
+  if(update_cart_amount($db, $cart_id, $amount)){
+    set_message('購入数を更新しました。');
+  } else {
+    set_error('購入数の更新に失敗しました。');
+  }
+}else{
   set_error('購入数の更新に失敗しました。');
 }
-
 //cart.phpへリダイレクト
 redirect_to(CART_URL);

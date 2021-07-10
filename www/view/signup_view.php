@@ -32,6 +32,7 @@
       </div>
       <!--登録ボタン-->
       <input type="submit" value="登録" class="btn btn-primary">
+      <input type="hidden" name="token" value="<?php print $token; ?>">
     </form>
   </div>
 </body>

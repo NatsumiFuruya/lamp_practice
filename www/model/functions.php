@@ -139,3 +139,21 @@ function h($string){
   return htmlspecialchars($string, ENT_QUOTES, 'utf-8');
 }
 
+// トークンの生成
+function get_csrf_token(){
+  // get_random_string()はユーザー定義関数。
+  $token = get_random_string(30);
+  // set_session()はユーザー定義関数。
+  set_session('csrf_token', $token);
+  return $token;
+}
+
+// トークンのチェック
+function is_valid_csrf_token($token){
+  //var_dump($token, get_session('csrf_token'));
+  if($token === '') {
+    return false;
+  }
+  // get_session()はユーザー定義関数
+  return $token === get_session('csrf_token');
+}

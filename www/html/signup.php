@@ -12,6 +12,7 @@ if(is_logined() === true){
   //ログインしている場合はindex.phpへリダイレクト
   redirect_to(HOME_URL);
 }
+$token = get_csrf_token();
 
 //signupの読み込み
 include_once VIEW_PATH . 'signup_view.php';

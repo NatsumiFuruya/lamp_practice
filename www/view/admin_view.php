@@ -53,6 +53,7 @@
       </div>
       <!--商品追加ボタン-->
       <input type="submit" value="商品追加" class="btn btn-primary">
+      <input type="hidden" name="token" value="<?php print $token; ?>">
     </form>
 
 
@@ -87,7 +88,8 @@
                 </div>
                 <!--変更ボタン-->
                 <input type="submit" value="変更" class="btn btn-secondary">
-                <input type="hidden" name="item_id" value="<?php print(h($item['item_id'])); ?>">
+                <input type="hidden" name="token" value="<?php print $token; ?>">
+                <input type="hidden" name="item_id" value="<?php print($item['item_id']); ?>">
               </form>
             </td>
             <td>
@@ -95,9 +97,11 @@
               <form method="post" action="admin_change_status.php" class="operation">
                 <?php if(is_open($item) === true){ ?>
                   <input type="submit" value="公開 → 非公開" class="btn btn-secondary">
+                  <input type="hidden" name="token" value="<?php print $token; ?>">
                   <input type="hidden" name="changes_to" value="close">
                 <?php } else { ?>
                   <input type="submit" value="非公開 → 公開" class="btn btn-secondary">
+                  <input type="hidden" name="token" value="<?php print $token; ?>">
                   <input type="hidden" name="changes_to" value="open">
                 <?php } ?>
                 <input type="hidden" name="item_id" value="<?php print(h($item['item_id'])); ?>">
@@ -105,7 +109,8 @@
               <!--削除ボタン-->
               <form method="post" action="admin_delete_item.php">
                 <input type="submit" value="削除" class="btn btn-danger delete">
-                <input type="hidden" name="item_id" value="<?php print(h($item['item_id'])); ?>">
+                <input type="hidden" name="token" value="<?php print $token; ?>">
+                <input type="hidden" name="item_id" value="<?php print($item['item_id']); ?>">
               </form>
 
             </td>

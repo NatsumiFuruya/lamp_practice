@@ -13,5 +13,7 @@ if(is_logined() === true){
   redirect_to(HOME_URL);
 }
 
+$token = get_csrf_token();
+
 //loginの読み込み
 include_once VIEW_PATH . 'login_view.php';

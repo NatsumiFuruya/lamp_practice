@@ -18,21 +18,27 @@ if(is_logined() === true){
 //usernameとpasswordを変数に格納
 $name = get_post('name');
 $password = get_post('password');
+$token = get_post('token');
 
 //PDOを取得
 $db = get_db_connect();
 
+$check_csrf = is_valid_csrf_token($token);
 //ログイン処理
 $user = login_as($db, $name, $password);
-if( $user === false){
+if($check_csrf === TRUE){
+  if( $user === false){
+    set_error('ログインに失敗しました。');
+    redirect_to(LOGIN_URL);
+  }
+  //ログイン完了メッセージ
+  set_message('ログインしました。');
+  //adminならばadmin.phpにリダイレクト
+  if ($user['type'] === USER_TYPE_ADMIN){
+    redirect_to(ADMIN_URL);
+  }
+}else{
   set_error('ログインに失敗しました。');
-  redirect_to(LOGIN_URL);
 }
-//ログイン完了メッセージ
-set_message('ログインしました。');
-//adminならばadmin.phpにリダイレクト
-if ($user['type'] === USER_TYPE_ADMIN){
-  redirect_to(ADMIN_URL);
-}
-//adminn以外ならばindex.phpにリダイレクト
+//admin以外ならばindex.phpにリダイレクト
 redirect_to(HOME_URL);
