@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+  <!--'templates/head.php'を読み込み-->
   <?php include VIEW_PATH . 'templates/head.php'; ?>
   <title>ご購入ありがとうございました！</title>
-  <link rel="stylesheet" href="<?php print(STYLESHEET_PATH . 'admin.css'); ?>">
+  <link rel="stylesheet" href="<?php print(h(STYLESHEET_PATH . 'admin.css')); ?>">
 </head>
 <body>
+  <!--'templates/header_logined.php'-->
   <?php include VIEW_PATH . 'templates/header_logined.php'; ?>
   <h1>ご購入ありがとうございました！</h1>
 
   <div class="container">
+    <!--'templates/messages.php'-->
     <?php include VIEW_PATH . 'templates/messages.php'; ?>
-
+    <!--カートに１つ以上商品があった場合の処理-->
     <?php if(count($carts) > 0){ ?>
+      <!--購入商品の表示-->
       <table class="table table-bordered">
         <thead class="thead-light">
           <tr>
@@ -26,19 +30,27 @@
         <tbody>
           <?php foreach($carts as $cart){ ?>
           <tr>
-            <td><img src="<?php print(IMAGE_PATH . $cart['image']);?>" class="item_image"></td>
-            <td><?php print($cart['name']); ?></td>
-            <td><?php print(number_format($cart['price'])); ?>円</td>
+            <!--商品画像-->
+            <td><img src="<?php print(h(IMAGE_PATH . $cart['image']));?>" class="item_image"></td>
+            <!--商品名-->
+            <td><?php print(h($cart['name'])); ?></td>
+            <!--値段-->
+            <td><?php print(h(number_format($cart['price']))); ?>円</td>
             <td>
-                <?php print($cart['amount']); ?>個
+                <!--購入数-->
+                <?php print(h($cart['amount'])); ?>個
             </td>
-            <td><?php print(number_format($cart['price'] * $cart['amount'])); ?>円</td>
+            <!--小計-->
+            <td><?php print(h(number_format($cart['price'] * $cart['amount']))); ?>円</td>
           </tr>
           <?php } ?>
         </tbody>
       </table>
-      <p class="text-right">合計金額: <?php print number_format($total_price); ?>円</p>
-    <?php } else { ?>
+      <!--合計金額-->
+      <p class="text-right">合計金額: <?php print(h(number_format($total_price))); ?>円</p>
+    <?php } 
+    //カートに商品がなかった場合
+    else { ?>
       <p>カートに商品はありません。</p>
     <?php } ?> 
   </div>
