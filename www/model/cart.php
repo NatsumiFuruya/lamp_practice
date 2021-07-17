@@ -1,6 +1,7 @@
 <?php 
 require_once MODEL_PATH . 'functions.php';
 require_once MODEL_PATH . 'db.php';
+require_once MODEL_PATH . 'order.php';
 
 function get_user_carts($db, $user_id){
   $sql = "
@@ -114,8 +115,14 @@ function purchase_carts($db, $carts){
       set_error($cart['name'] . 'の購入に失敗しました。');
     }
   }
+  $user_id = $carts[0]['user_id'];
+  insert_orders($db, $user_id);
+  $orders_id = $db -> lastInsertId();
   
-  delete_user_carts($db, $carts[0]['user_id']);
+  foreach($carts as  $cart){
+    insert_order_items($db, $orders_id, $cart['item_id'], $cart['name'], $cart['price'], $cart['amount']);
+  }
+  delete_user_carts($db, $user_id);
 }
 
 function delete_user_carts($db, $user_id){

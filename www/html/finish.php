@@ -24,14 +24,24 @@ $db = get_db_connect();
 //PDOを利用してログインユーザーのデータを取得
 $user = get_login_user($db);
 //DBから情報を取得（cartsだけどinsert文をfetchallで取得）
+//$cartsにはログインしたuserのカート情報が格納
+//items.item_id, items.name, items.price, items.stock, items.status, items.image, carts.cart_id, carts.user_id, carts.amount
 $carts = get_user_carts($db, $user['user_id']);
 
 //カート内の商品の購入処理
-if(purchase_carts($db, $carts) === false){
-  set_error('商品が購入できませんでした。');
-  //購入できなかった場合、cart.phpへリダイレクト
-  redirect_to(CART_URL);
-} 
+
+$db->beginTransaction();
+try{
+  if(purchase_carts($db, $carts) === false){
+    set_error('商品が購入できませんでした。');
+    //購入できなかった場合、cart.phpへリダイレクト
+    redirect_to(CART_URL);
+  }
+  $db->commit();
+}catch (Exception $e){
+  $db->rollback();
+  echo '失敗しました。' .  $e->getMessage();
+}
 
 //カート内の合計金額を変数に格納
 $total_price = sum_carts($carts);
