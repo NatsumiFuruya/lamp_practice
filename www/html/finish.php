@@ -32,6 +32,7 @@ $carts = get_user_carts($db, $user['user_id']);
 
 $db->beginTransaction();
 try{
+  
   if(purchase_carts($db, $carts) === false){
     set_error('商品が購入できませんでした。');
     //購入できなかった場合、cart.phpへリダイレクト
@@ -40,7 +41,8 @@ try{
   $db->commit();
 }catch (Exception $e){
   $db->rollback();
-  echo '失敗しました。' .  $e->getMessage();
+  set_error('エラー発生');
+  redirect_to(CART_URL);
 }
 
 //カート内の合計金額を変数に格納
