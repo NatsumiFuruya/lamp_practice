@@ -5,10 +5,9 @@ require_once '../conf/const.php';
 require_once MODEL_PATH . 'functions.php';
 //userデータに関する関数ファイルを読み込み
 require_once MODEL_PATH . 'user.php';
-//itemデータに関する関数ファイルを読み込み
-require_once MODEL_PATH . 'item.php';
 //orderデータに関する関数ファイルを読み込み
 require_once MODEL_PATH . 'order.php';
+
 
 //ログインチェックを行うためにセッションを開始する
 session_start();
@@ -24,18 +23,18 @@ $db = get_db_connect();
 //PDOを利用してログインユーザーのデータを取得
 $user = get_login_user($db);
 
-$id = get_post('id');
-$token = get_post('token');
-
-
-$orders = get_all_orders($db);
-
-$order_items = get_orders($db, $id);
-
-$orders_total = get_orders_total($db, $id);
-
-
-$token = get_csrf_token();
+//admin時の処理
+if ($user['type'] === USER_TYPE_ADMIN){  
+  //ordersテーブルの値を取得
+  $orders = get_all_orders($db);
+  
+  //$sum_price = SUM(order_items.item_price * order_items.amount)  
+}else{
+  //admin以外の処理  
+  $orders = get_user_orders($db, $user['user_id']);
+  
+  
+}
 
 //indexの読み込み
-include_once VIEW_PATH . 'order_view.php';
+include_once VIEW_PATH . 'history_view.php';
