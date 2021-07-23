@@ -49,6 +49,23 @@
       <?php } ?>
       </div>
     </div>
+    <h1>人気ランキング</h1>
+    <table>
+      <tr>
+        <th>１位</th>
+        <th>２位</th>
+        <th>３位</th>
+      </tr>
+      <tr>      
+        <th><img class="card-img" src="<?php print(h(IMAGE_PATH . $item_ranking[0]['image'])); ?>"></th>
+        <th><img class="card-img" src="<?php print(h(IMAGE_PATH . $item_ranking[1]['image'])); ?>"></th>
+        <th><img class="card-img" src="<?php print(h(IMAGE_PATH . $item_ranking[2]['image'])); ?>"></th>
+      </tr>
+      <tr>
+        <th><?php print(h($item_ranking[0]['name'])); ?></th>
+        <th><?php print(h($item_ranking[1]['name'])); ?></th>
+        <th><?php print(h($item_ranking[2]['name'])); ?></th>
+      </tr>
   </div>
   
 </body>
