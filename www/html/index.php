@@ -24,6 +24,8 @@ $user = get_login_user($db);
 //商品一覧用の商品データを取得
 $items = get_open_items($db);
 
+$item_ranking = get_item_ranking($db);
+
 $token = get_csrf_token();
 
 //indexの読み込み
